@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkScrolledWindow" id="lyrics_window">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="shadow_type">in</property>
+    <child>
+      <object class="GtkLabel" id="lyrics">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAccelGroup" id="players_group"/>
+  <object class="GtkMenu" id="players_menu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="accel_group">players_group</property>
+  </object>
+  <object class="GtkSpinner" id="spinner">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+  </object>
+  <template class="GlyricsWindow" parent="GtkApplicationWindow">
+    <property name="can_focus">False</property>
+    <property name="default_width">600</property>
+    <property name="default_height">300</property>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header_bar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="title">Glyrics</property>
+        <property name="show_close_button">True</property>
+        <child>
+          <object class="GtkMenuButton" id="players_button">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="relief">none</property>
+            <property name="popover">players_popover</property>
+            <child>
+              <object class="GtkImage" id="player_image">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">media-playback-start-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <attributes>
+          <attribute name="weight" value="bold"/>
+          <attribute name="scale" value="2"/>
+        </attributes>
+      </object>
+    </child>
+  </template>
+  <object class="GtkPopover" id="players_popover">
+    <property name="can_focus">False</property>
+    <property name="relative_to">players_button</property>
+    <property name="position">bottom</property>
+    <child>
+      <object class="GtkBox" id="players_box">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">10</property>
+        <property name="homogeneous">True</property>
+        <property name="baseline_position">bottom</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

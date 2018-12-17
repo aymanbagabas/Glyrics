@@ -1,0 +1,6 @@
+data/com.aymanbagabas.Glyrics.desktop.in
+data/com.aymanbagabas.Glyrics.appdata.xml.in
+data/com.aymanbagabas.Glyrics.gschema.xml
+src/window.ui
+src/main.py
+src/window.py

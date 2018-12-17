@@ -1,0 +1,100 @@
+{
+    "app-id": "com.aymanbagabas.Glyrics",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "3.28",
+    "sdk": "org.gnome.Sdk",
+    "command": "glyrics",
+    "finish-args": [
+        "--share=network",
+        "--share=ipc",
+        "--socket=x11",
+        "--socket=wayland",
+        "--socket=system-bus",
+        "--socket=session-bus",
+        "--filesystem=xdg-run/dconf",
+        "--filesystem=~/.config/dconf:ro",
+        "--talk-name=ca.desrt.dconf",
+        "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
+    ],
+    "build-options": {
+        "cflags": "-O2 -g",
+        "cxxflags": "-O2 -g",
+        "env": {
+            "V": "1"
+        }
+    },
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig",
+        "/man",
+        "/share/doc",
+        "/share/gtk-doc",
+        "/share/man",
+        "/share/pkgconfig",
+        "*.la",
+        "*.a"
+    ],
+    "modules": [
+        {
+            "name" : "libglyr",
+            "buildsystem" : "cmake",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/sahib/glyr.git"
+                }
+            ]
+        },
+	{
+	  "name": "cython",
+	  "buildsystem": "simple",
+	  "build-commands": [
+	    "python ./setup.py install --prefix=/app",
+	    "python3 ./setup.py install --prefix=/app"
+	  ],
+	  "sources": [
+	    {
+	      "type": "archive",
+	      "url": "https://github.com/cython/cython/archive/0.25.2.tar.gz",
+	      "sha256": "206b6fc7e8cebe8e0529064a92e4f53f13a8f1d1f4dc173c32782ab134a2551e"
+	    }
+	  ]
+	},
+        {
+            "name" : "python-glyr",
+            "buildsystem" : "simple",
+            "build-commands" : [
+            	"python3 ./setup.py install --prefix=/app"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "git://github.com/sahib/python-glyr.git"
+                }
+            ]
+        },
+        {
+            "name": "playerctl",
+            "buildsystem": "meson",
+            "builddir": true,
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/acrisci/playerctl.git"
+                }
+            ]
+        },
+        {
+            "name": "glyrics",
+            "buildsystem": "meson",
+            "config-opts": [ "--libdir=lib" ],
+            "builddir": true,
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "file:///home/ayman/Projects/Glyrics"
+                }
+            ]
+        }
+    ]
+}
