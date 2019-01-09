@@ -2,7 +2,7 @@
 
 # glyrics.in
 #
-# Copyright 2018 Ayman Bagabas
+# Copyright 2019 Ayman Bagabas
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -36,9 +36,6 @@ if __name__ == '__main__':
     from gi.repository import Gio
     resource = Gio.Resource.load(os.path.join(pkgdatadir, 'glyrics.gresource'))
     resource._register()
-    
-    import glyrics
-    glyrics.version = VERSION
 
     from glyrics import main
     sys.exit(main.main(VERSION))

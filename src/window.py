@@ -1,6 +1,6 @@
 # window.py
 #
-# Copyright 2018 Ayman Bagabas
+# Copyright 2019 Ayman Bagabas
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -31,9 +31,9 @@ class GlyricsWindow(Gtk.ApplicationWindow):
     lyrics_window = GtkTemplate.Child()
     lyrics = GtkTemplate.Child()
     spinner = GtkTemplate.Child()
-    
+
     spinner_timeout_id = None
-    
+ 
     group = Gtk.RadioButton.new(None)
 
 
@@ -41,41 +41,42 @@ class GlyricsWindow(Gtk.ApplicationWindow):
         super().__init__(**kwargs)
         self.init_template()
         self.players_box.show_all()
-        
-        
-    def update_lyrics(self, lyrics):
-        if self.spinner_timeout_id:
-            GLib.source_remove(self.spinner_timeout_id)
-            self.spinner_timeout_id = None
+
+
+    def set_lyrics(self, lyrics):
         self.lyrics.set_text(lyrics)
+
+        if self.spinner_timeout_id:
+            self.remove_spinner()
         if self.spinner in self:
             self.remove(self.spinner)
         elif self.label in self:
             self.remove(self.label)
-        
-        self.add(self.lyrics_window)
-        
-        
-    def on_spinner_timeout(self, *args, **kwargs):
-        if self.spinner_timeout_id:
-            GLib.source_remove(self.spinner_timeout_id)
-            self.spinner_timeout_id = None
-            self.clear_window("No lyrics found!")
-            return True
         else:
-            return False
-        
-        
+            return
+
+        self.add(self.lyrics_window)
+        pos = self.lyrics_window.get_vadjustment()
+        pos.set_value(0)
+        self.lyrics_window.set_vadjustment(pos)
+
+
+    def stop_spinner(self):
+        self.spinner.stop()
+
+
     def pre_metadata(self):
         if self.label in self:
             self.remove(self.label)
         elif self.lyrics_window in self:
             self.remove(self.lyrics_window)
+        else:
+            return
+
         self.add(self.spinner)
         self.spinner.start()
-        self.spinner_timeout_id = GLib.timeout_add(10000, self.on_spinner_timeout, None)
-        
-        
+
+
     def set_title(self, title=None, subtitle=None):
         if title:
             self.header_bar.props.title = title
@@ -85,8 +86,8 @@ class GlyricsWindow(Gtk.ApplicationWindow):
             self.header_bar.props.subtitle = subtitle
         else:
             self.header_bar.props.subtitle = None
-        
-        
+
+
     def clear_window(self, label=None):
         if self.lyrics_window in self:
             self.remove(self.lyrics_window)
@@ -100,36 +101,37 @@ class GlyricsWindow(Gtk.ApplicationWindow):
             if self.spinner_timeout_id:
                 GLib.source_remove(self.spinner_timeout_id)
                 self.spinner_timeout_id = None
-            self.label.props.label = "No player available!"
-        
-        
-    def on_radio_toggled(self, radio, app):
+            self.label.props.label = ""
+
+
+    def on_radio_toggled(self, radio, player):
+        app = self.props.application
+
         if radio.get_active():
-            app.set_player(radio.props.label)
-        
-        
-    def update_players_menu(self, app):
+            app.set_player(player)
+
+
+    def update_players_menu(self):
+        app = self.props.application
+
+        # In case of no player available
         if len(app.playermanager.props.players) == 0:
-            self.clear_window()
             self.players_button.set_sensitive(False)
             self.set_title()
             return
         else:
-            if self.label in self:
-                self.remove(self.label)
-                self.add(self.lyrics_window)
             self.players_button.set_sensitive(True)
-        
+
         for child in self.players_box:
             self.players_box.remove(child)
-        
+
         for player in app.playermanager.props.players:
             radio = Gtk.RadioButton.new_with_label_from_widget(self.group, player.props.player_name)
-            
+
             if player == app.player:
                 radio.set_active(True)
-            
+
             self.players_box.add(radio)
-            radio.connect("toggled", self.on_radio_toggled, app)
-        
+            radio.connect("toggled", self.on_radio_toggled, player)
+
         self.players_box.show_all()
