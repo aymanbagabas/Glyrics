@@ -195,6 +195,8 @@ class Application(Gtk.Application):
         if len(self.playermanager.props.players) == 0:
             win.clear_window("No player available")
 
+        win.update_players_menu()
+
 
     def cancel_all_queries(self):
         for q in queries:
