@@ -77,7 +77,8 @@
             "builddir": true,
             "sources": [
                 {
-                    "type": "dir"
+                    "type": "dir",
+					"path": "."
                 }
             ]
         }
