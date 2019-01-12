@@ -15,6 +15,6 @@ See TODO.
 * [acrisci](https://github.com/acrisci) for [playerctl](https://github.com/acrisci/playerctl) library.
 
 ## License
-See COPYING.
+See LICENSE.
 
 Copyright © 2019, Ayman Bagabas
