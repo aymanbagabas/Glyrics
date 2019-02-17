@@ -1,5 +1,15 @@
+desktop_conf = configuration_data()
+desktop_conf.set('bindir', join_paths(get_option('prefix'), get_option('bindir')))
+desktop_conf.set('VERSION', meson.project_version())
+
+desktop_in = configure_file(
+  input: 'com.aymanbagabas.Glyrics.desktop.in.in',
+  output: 'com.aymanbagabas.Glyrics.desktop.in',
+  configuration: desktop_conf
+)
+
 desktop_file = i18n.merge_file(
-  input: 'com.aymanbagabas.Glyrics.desktop.in',
+  input: desktop_in,
   output: 'com.aymanbagabas.Glyrics.desktop',
   type: 'desktop',
   po_dir: '../po',
