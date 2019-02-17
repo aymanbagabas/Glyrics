@@ -1,10 +1,10 @@
 {
-    "app-id": "com.aymanbagabas.Glyrics",
-    "runtime": "org.gnome.Platform",
-    "runtime-version": "3.28",
-    "sdk": "org.gnome.Sdk",
-    "command": "glyrics",
-    "finish-args": [
+    "app-id" : "com.aymanbagabas.Glyrics",
+    "runtime" : "org.gnome.Platform",
+    "runtime-version" : "3.28",
+    "sdk" : "org.gnome.Sdk",
+    "command" : "glyrics",
+    "finish-args" : [
         "--share=network",
         "--share=ipc",
         "--socket=x11",
@@ -16,14 +16,14 @@
         "--talk-name=ca.desrt.dconf",
         "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
     ],
-    "build-options": {
-        "cflags": "-O2 -g",
-        "cxxflags": "-O2 -g",
-        "env": {
-            "V": "1"
+    "build-options" : {
+        "cflags" : "-O2 -g",
+        "cxxflags" : "-O2 -g",
+        "env" : {
+            "V" : "1"
         }
     },
-    "cleanup": [
+    "cleanup" : [
         "/include",
         "/lib/pkgconfig",
         "/man",
@@ -34,7 +34,7 @@
         "*.la",
         "*.a"
     ],
-    "modules": [
+    "modules" : [
         {
             "name" : "libglyr",
             "buildsystem" : "cmake",
@@ -45,12 +45,12 @@
                 }
             ]
         },
-	"python3-cython.json",
+        "python3-cython.json",
         {
             "name" : "python-glyr",
             "buildsystem" : "simple",
             "build-commands" : [
-            	"python3 ./setup.py install --prefix=/app"
+                "python3 ./setup.py install --prefix=/app"
             ],
             "sources" : [
                 {
@@ -60,25 +60,27 @@
             ]
         },
         {
-            "name": "playerctl",
-            "buildsystem": "meson",
-            "builddir": true,
-            "sources": [
+            "name" : "playerctl",
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "sources" : [
                 {
-                    "type": "git",
-                    "url": "git://github.com/acrisci/playerctl.git"
+                    "type" : "git",
+                    "url" : "git://github.com/acrisci/playerctl.git"
                 }
             ]
         },
         {
-            "name": "glyrics",
-            "buildsystem": "meson",
-            "config-opts": [ "--libdir=lib" ],
-            "builddir": true,
-            "sources": [
+            "name" : "glyrics",
+            "buildsystem" : "meson",
+            "config-opts" : [
+                "--libdir=lib"
+            ],
+            "builddir" : true,
+            "sources" : [
                 {
-                    "type": "dir",
-					"path": "."
+                    "type" : "dir",
+                    "path" : "."
                 }
             ]
         }

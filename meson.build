@@ -1,5 +1,5 @@
 project('glyrics',         version: '0.1.3 (Baby Vanilla)',
-  meson_version: '>= 0.48.0',
+  meson_version: '>= 0.46.0',
 )
 
 i18n = import('i18n')
