@@ -2,6 +2,8 @@ pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.proje
 moduledir = join_paths(pkgdatadir, 'glyrics')
 gnome = import('gnome')
 
+inc_local = include_directories(get_option('prefix'))
+
 gnome.compile_resources('glyrics',
   'glyrics.gresource.xml',
   gresource_bundle: true,
@@ -9,10 +11,11 @@ gnome.compile_resources('glyrics',
   install_dir: pkgdatadir,
 )
 
-python3 = import('python3')
+python_name = 'python3'
+python = import('python').find_installation(python_name)
 
 conf = configuration_data()
-conf.set('PYTHON', python3.find_python().path())
+conf.set('PYTHON', python_name)
 conf.set('VERSION', meson.project_version())
 conf.set('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('pkgdatadir', pkgdatadir)
@@ -31,5 +34,9 @@ glyrics_sources = [
   'main.py',
   'window.py',
 ]
+
+playerctl_dep = dependency('playerctl', required: true)
+libglyr_dep = dependency('libglyr', required: true)
+plyr_dep = python.dependency('plyr', required: true)
 
 install_data(glyrics_sources, install_dir: moduledir)
