@@ -1,9 +1,7 @@
 [Desktop Entry]
-Version=@VERSION@
-Encoding=UTF-8
 Name=Glyrics
 Exec=@bindir@/glyrics %U
 Terminal=false
 Type=Application
-Categories=GTK;Audio;
+Categories=GTK;AudioVideo;Audio;
 StartupNotify=true
