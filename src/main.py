@@ -22,7 +22,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Playerctl', '2.0')
 
-from gi.repository import Gtk, Gio, GLib
+from gi.repository import Gtk, Gio, GLib, GObject
 
 from .window import GlyricsWindow
 
@@ -47,15 +47,19 @@ class GlyricsQuery(Query):
         self.parallel = 20
         self.providers = 'all'
         # TODO: respect system proxy settings
-        self.useragent = "glyrics/" + VERSION + "+https://www.github.com/aymanbagabas/glyrics"
+        self.useragent = "glyrics/" + str(Application.version) + "+https://www.github.com/aymanbagabas/glyrics"
 
         queries.append(self)
 
 
 class Application(Gtk.Application):
-    def __init__(self):
+
+    version = GObject.Property(type=str, flags=GObject.ParamFlags.CONSTRUCT_ONLY|GObject.ParamFlags.READWRITE)
+
+    def __init__(self, **kwargs):
         super().__init__(application_id='com.aymanbagabas.Glyrics',
-                         flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
+                         flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
+                         **kwargs)
 
         self.playermanager = Playerctl.PlayerManager()
         self.player = None
@@ -213,15 +217,9 @@ class Application(Gtk.Application):
         options = options.end().unpack()
 
         if "version" in options:
-            print("Glyrics {}".format(VERSION))
+            print("Glyrics {}".format(self.version))
             return 0
 
         self.activate()
         return 0
 
-
-def main(version):
-    global VERSION
-    VERSION = version
-    app = Application()
-    return app.run(sys.argv)

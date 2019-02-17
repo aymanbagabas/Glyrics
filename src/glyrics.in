@@ -38,4 +38,5 @@ if __name__ == '__main__':
     resource._register()
 
     from glyrics import main
-    sys.exit(main.main(VERSION))
+    app = main.Application(version=VERSION)
+    sys.exit(app.run(sys.argv))
