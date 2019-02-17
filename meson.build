@@ -1,4 +1,4 @@
-project('glyrics',         version: '0.1.3 (Baby Vanilla)',
+project('glyrics',         version: '0.2.0 (Baby Lavender)',
   meson_version: '>= 0.46.0',
 )
 
