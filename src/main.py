@@ -100,16 +100,19 @@ class Application(Gtk.Application):
             and len(db.lookup(query)) == 0:
                 # No data found
                 win.clear_window("No lyrics found")
+                queries.remove(query)
         else:
-                win.clear_window("No lyrics found")
+                if len(queries) == 0:
+                    win.clear_window("No lyrics found")
+                if query in queries:
+                    queries.remove(query)
 
-        queries.remove(query)
 
 
     def on_metadata(self, player, metadata):
         win = self.props.active_window
         query = GlyricsQuery(get_type="lyrics")
-        subtitle = None
+        subtitle = ""
         title = player.get_title()
         artist = player.get_artist()
         album = player.get_album()
@@ -119,19 +122,14 @@ class Application(Gtk.Application):
         if title:
             query.title = title
             query.normalize = ("title")
-            if artist and album:
-                subtitle = "by {} on {}".format(artist, album)
-                query.normalize += ("artist", "album")
+            if artist:
+                subtitle += "by {} ".format(artist)
                 query.artist = artist
+                query.normalize += ("artist",)
+            if album:
+                subtitle += "on {}".format(artist, album)
                 query.album = album
-            elif artist and not album:
-                subtitle = "by {}".format(artist)
-                query.normalize += ("artist")
-                query.artist = artist
-            elif not artist and album:
-                subtitle = "on {}".format(artist, album)
-                query.normalize += ("album")
-                query.album = album
+                query.normalize += ("album",)
 
             t = Thread(target=self.query_commit, args=(query, self.player,))
             t.daemon = True
@@ -205,6 +203,7 @@ class Application(Gtk.Application):
     def cancel_all_queries(self):
         for q in queries:
             Thread(target=q.cancel).start()
+            queries.remove(q)
 
 
     def on_quit(self, action, param):
